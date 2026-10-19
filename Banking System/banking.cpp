@@ -3,7 +3,6 @@
 #include <string>
 using namespace std;
 
-// Base Class
 class BankAccount {
 private:
     int accountNumber;
@@ -39,7 +38,7 @@ public:
         return balance;
     }
 
-    // Protected access to balance for derived classes
+    
     void addInterest(double amount) {
         balance = balance + amount;
     }
@@ -57,7 +56,6 @@ public:
     virtual ~BankAccount() {}
 };
 
-// Derived Class 1
 class SavingsAccount : public BankAccount {
 private:
     double interestRate;
@@ -81,7 +79,6 @@ public:
     }
 };
 
-// Derived Class 2
 class CheckingAccount : public BankAccount {
 private:
     double overdraftLimit;
@@ -94,17 +91,14 @@ public:
 
     void withdraw(double amount) override {
         if (amount > 0 && amount <= getBalance() + overdraftLimit) {
-            // Withdraw from the available balance first
             double newBalance = getBalance() - amount;
 
-            // Use deposit/withdraw to update balance safely
             if (amount <= getBalance()) {
                 BankAccount::withdraw(amount);
             } else {
                 double extra = amount - getBalance();
                 BankAccount::withdraw(getBalance());
                 cout << "Overdraft Used: " << extra << endl;
-                // Record the overdraft as a negative balance
                 BankAccount::deposit(0);
                 setOverdraftBalance(newBalance);
             }
@@ -114,7 +108,6 @@ public:
     }
 
     void setOverdraftBalance(double amount) {
-        // Restore balance to the required negative value
         if (getBalance() > amount) {
             BankAccount::withdraw(getBalance() - amount);
         } else if (getBalance() < amount) {
@@ -134,7 +127,7 @@ public:
     }
 };
 
-// Derived Class 3
+
 class FixedDepositAccount : public BankAccount {
 private:
     int term;
